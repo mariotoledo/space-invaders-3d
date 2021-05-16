@@ -9,6 +9,8 @@ public class GameController : MonoBehaviour
     public float spaceShipSpeed = 0.01f;
     public float spaceShipBulletSpeed = 0.01f;
 
+    public int maxBarrierLifes = 3;
+
     private float minScreenBound;
     private float maxScreenBound;
 
@@ -26,7 +28,7 @@ public class GameController : MonoBehaviour
         CalculateScreenBounds();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         UpdatePlayerMovement();
         UpdatePlayerShot();
@@ -56,8 +58,18 @@ public class GameController : MonoBehaviour
 
     void UpdatePlayerShot() {
         if(Input.GetButton("Fire1")) {
-            Debug.Log("Firing");
             player.Shoot();
         }
+    }
+
+    public void OnBulletHitCollider(Collider2D collider) {
+        if(collider.tag == "BarrierBlock") {
+            collider.gameObject.GetComponent<BarrierBlock>().TakeHit();
+        }
+        player.canShoot = true;
+    }
+
+    public void OnBullerLeaveScreen() {
+        player.canShoot = true;
     }
 }

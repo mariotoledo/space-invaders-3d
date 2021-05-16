@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class PlayerBullet : MonoBehaviour
 {
-    private Transform bullet;
-
-    public delegate void PlayerBulletDestroyedDelegate();
-    public static event PlayerBulletDestroyedDelegate OnBulletDestroyed;   
+    private Transform bullet; 
 
     void Start()
     {
@@ -15,25 +12,20 @@ public class PlayerBullet : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        Debug.Log(GameController.instance);
         bullet.position += Vector3.up * GameController.instance.spaceShipBulletSpeed;
-
-        Debug.Log(GameController.instance.camera.WorldToScreenPoint(bullet.position).y);
 
         if(GameController.instance.camera.WorldToScreenPoint(bullet.position).y >= Screen.height) {
             Destroy(gameObject);
-            OnBulletDestroyed();
+            GameController.instance.OnBullerLeaveScreen();
         }
     }
 
-    void OnTriggerExit2D(Collider2D other) {
-        if(other.tag == "Enemy") {
-            Destroy(other.gameObject);
+    void OnTriggerEnter2D(Collider2D other) {
+        if(other.tag != "Player") {
+            Destroy(gameObject);
+            GameController.instance.OnBulletHitCollider(other);
         }
-
-        Destroy(gameObject);
-        OnBulletDestroyed();
     }
 }

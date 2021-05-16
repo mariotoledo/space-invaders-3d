@@ -8,12 +8,11 @@ public class Player : MonoBehaviour
     private Transform playerPosition;
     public PlayerBullet bullet;
 
-    private bool canShoot = true;
+    public bool canShoot = true;
 
     void Start()
     {
         playerPosition = GetComponent<Transform>();
-        PlayerBullet.OnBulletDestroyed += OnBulletDestroyed;
     }
 
     public Vector3 GetPosition() {
@@ -29,10 +28,5 @@ public class Player : MonoBehaviour
             Instantiate(bullet.gameObject, playerPosition.position, playerPosition.rotation);
             canShoot = false;
         }
-    }
-
-    void OnBulletDestroyed() {
-        Debug.Log("Entered");
-        canShoot = true;
     }
 }
