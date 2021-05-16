@@ -325,9 +325,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spaceShipSpeed: 0.05
-  maxBound: 10
-  minBound: -10
+  spaceShipBulletSpeed: 0.01
   player: {fileID: 1903408759}
+  camera: {fileID: 519420031}
 --- !u!1 &1903408755
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,8 +355,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1903408755}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.06, y: -3.45, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.06, y: -4.14, z: 0}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_Children:
   - {fileID: 977401152}
   m_Father: {fileID: 0}
@@ -421,6 +421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 669cdbbe65ee084479fd60889b040115, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bullet: {fileID: 2481273585802745299, guid: 6b17ae0fffe6bd3468225c83f8d7b692, type: 3}
 --- !u!1 &2043182847
 GameObject:
   m_ObjectHideFlags: 0
