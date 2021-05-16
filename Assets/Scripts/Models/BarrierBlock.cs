@@ -6,22 +6,23 @@ public class BarrierBlock : MonoBehaviour
 {
     public int numberOfLives;
 
+    private Material currentMaterial;
+
     // Start is called before the first frame update
     void Start()
     {
         numberOfLives = GameController.instance.maxBarrierLifes;
+        currentMaterial = gameObject.GetComponent<Renderer>().material;
     }
 
     // Update is called once per frame
     public void TakeHit() {
         numberOfLives--;
 
-        Debug.Log("numberOfLives: " + numberOfLives);
-
-        Color materialColor = GetComponent<MeshRenderer>().material.color;
-        materialColor.a = (float)numberOfLives / (float)GameController.instance.maxBarrierLifes;
-        Debug.Log(materialColor.a);
-        GetComponent<MeshRenderer>().material.color = materialColor;
+        Color oldColor = currentMaterial.color;
+        float colorFrequency = (float)numberOfLives / (float)GameController.instance.maxBarrierLifes;
+        Color newColor = new Color(colorFrequency, colorFrequency, colorFrequency, colorFrequency);
+        currentMaterial.SetColor("_Color", newColor);
 
         if(numberOfLives == 0) {
             Destroy(gameObject);
