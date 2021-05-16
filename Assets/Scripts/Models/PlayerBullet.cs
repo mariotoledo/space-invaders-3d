@@ -11,7 +11,6 @@ public class PlayerBullet : MonoBehaviour
         bullet = GetComponent<Transform>();
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         bullet.position += Vector3.up * GameController.instance.spaceShipBulletSpeed;
