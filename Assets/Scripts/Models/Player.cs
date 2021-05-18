@@ -29,4 +29,16 @@ public class Player : MonoBehaviour
             canShoot = false;
         }
     }
+
+    public void Move(float horizontalTrigger) {
+        float playerPositionScreenX = GameController.instance.camera.WorldToScreenPoint(GetPosition()).x;
+
+        if(
+            (playerPositionScreenX < GameController.instance.minScreenBound && horizontalTrigger < 0) || 
+            (playerPositionScreenX > GameController.instance.maxScreenBound && horizontalTrigger > 0)) {
+            horizontalTrigger = 0;
+        }
+
+        SetPosition(GetPosition() + (Vector3.right * horizontalTrigger * GameController.instance.spaceShipSpeed));
+    }
 }

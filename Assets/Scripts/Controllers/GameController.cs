@@ -8,11 +8,17 @@ public class GameController : MonoBehaviour
 
     public float spaceShipSpeed = 0.01f;
     public float spaceShipBulletSpeed = 0.01f;
+    public float enemySpeed = 0.1f;
+    public float enemyMoveFrequency = 0.1f;
 
     public int maxBarrierLifes = 3;
+    public int maxPlayerLifes = 3;
+    public int maxEnemyLifes = 1;
 
-    private float minScreenBound;
-    private float maxScreenBound;
+    public float minScreenBound;
+    public float maxScreenBound;
+
+    public int points = 0;
 
     public Player player;
     public Camera camera;
@@ -46,14 +52,7 @@ public class GameController : MonoBehaviour
 
     void UpdatePlayerMovement() {
         float horizontalTrigger = Input.GetAxis("Horizontal");
-
-        float playerPositionScreenX = camera.WorldToScreenPoint(player.GetPosition()).x;
-
-        if((playerPositionScreenX < minScreenBound && horizontalTrigger < 0) || (playerPositionScreenX > maxScreenBound && horizontalTrigger > 0)) {
-            horizontalTrigger = 0;
-        }
-
-        player.SetPosition(player.GetPosition() + (Vector3.right * horizontalTrigger * spaceShipSpeed));
+        player.Move(horizontalTrigger);
     }
 
     void UpdatePlayerShot() {
@@ -65,11 +64,18 @@ public class GameController : MonoBehaviour
     public void OnBulletHitCollider(Collider2D collider) {
         if(collider.tag == "BarrierBlock") {
             collider.gameObject.GetComponent<BarrierBlock>().TakeHit();
+        } else if (collider.tag == "Enemy") {
+            collider.gameObject.GetComponent<Enemy>().TakeHit();
+            points += 100;
         }
         player.canShoot = true;
     }
 
-    public void OnBullerLeaveScreen() {
+    public void OnBulletLeaveScreen() {
         player.canShoot = true;
+    }
+
+    public void GameOver() {
+        Time.timeScale = 0;
     }
 }

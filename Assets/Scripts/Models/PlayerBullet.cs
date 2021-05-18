@@ -17,7 +17,7 @@ public class PlayerBullet : MonoBehaviour
 
         if(GameController.instance.camera.WorldToScreenPoint(bullet.position).y >= Screen.height) {
             Destroy(gameObject);
-            GameController.instance.OnBullerLeaveScreen();
+            GameController.instance.OnBulletLeaveScreen();
         }
     }
 
