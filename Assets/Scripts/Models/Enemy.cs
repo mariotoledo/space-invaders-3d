@@ -13,7 +13,6 @@ public class Enemy : MonoBehaviour
     }
 
     public void Shoot() {
-        Debug.Log("Shooting");
         Instantiate(enemyBullet.gameObject, gameObject.transform.position, gameObject.transform.rotation);
     }
     

@@ -13,6 +13,8 @@ public class GameController : MonoBehaviour
     public float enemySpeed = 0.1f;
     public float enemyBulletSpeed = 0.01f;
     public float enemyShootingFrequency = 3f;
+    public float enemySpaceShipFrequency = 15f;
+    public float enemySpaceShipSpeed = 0.1f;
     public float stageDifficultMultiplier = 1.3f;
 
     public int maxBarrierLifes = 3;
@@ -24,6 +26,8 @@ public class GameController : MonoBehaviour
     public float maxScreenBound;
 
     public int points = 0;
+    public int normalEnemyPoints = 100;
+    public int specialEnemyPoints = 300;
 
     private int stage = 0;
     private int currentPlayerLifes = 0;
@@ -36,6 +40,7 @@ public class GameController : MonoBehaviour
     private GameState gameState;
 
     public EnemyGroup enemyGroup;
+    public EnemySpaceShip enemySpaceShip;
 
     public GameObject gameOverText;
     public GameObject stageText;
@@ -57,6 +62,7 @@ public class GameController : MonoBehaviour
     }
 
     void StartNewStage() {
+        CancelInvoke();
         enemyDeathCount = 0;
         enemyGroup.CreateEnemies();
         gameState = GameState.Starting;
@@ -66,6 +72,12 @@ public class GameController : MonoBehaviour
         stageText.SetActive(true);
 
         Invoke("RunStage", newStageTextSecondsDelay);
+        InvokeRepeating("InitializeEnemySpaceShip", enemySpaceShipFrequency, enemySpaceShipFrequency);
+        InvokeRepeating("EnemyShoot", enemyShootingFrequency, enemyShootingFrequency);
+    }
+
+    void EnemyShoot() {
+        enemyGroup.Shoot();
     }
 
     void RunStage() {
@@ -83,6 +95,7 @@ public class GameController : MonoBehaviour
             UpdatePlayerMovement();
             UpdatePlayerShot();
             UpdateEnemyMovement();
+            enemySpaceShip.Move();
         } else if (gameState == GameState.GameOver) {
             if(Input.GetButton("Fire1")) {
                 SceneManager.LoadScene("MainScene");
@@ -115,11 +128,17 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public void InitializeEnemySpaceShip() {
+        enemySpaceShip.Restart();
+    }
+
     public void OnBulletHitCollider(Collider2D collider) {
         if(collider.tag == "BarrierBlock") {
             collider.gameObject.GetComponent<BarrierBlock>().TakeHit();
         } else if (collider.tag == "Enemy") {
             collider.gameObject.GetComponent<Enemy>().TakeHit();
+        } else if (collider.tag == "EnemySpaceShip") {
+            collider.gameObject.GetComponent<EnemySpaceShip>().TakeHit();
         }
         player.canShoot = true;
     }
@@ -142,11 +161,18 @@ public class GameController : MonoBehaviour
         player.canShoot = true;
     }
 
+    public void OnEnemySpaceShipKilled() {
+        AddPoints(specialEnemyPoints);
+    }
+
+    private void AddPoints (int points) {
+        this.points += points;
+        pointsText.GetComponent<Text>().text = "Points: " + this.points;
+    }
+
     public void OnEnemyKilled() {
         enemyDeathCount++;
-        points += 100;
-
-        pointsText.GetComponent<Text>().text = "Points: " + points;
+        AddPoints(normalEnemyPoints);
 
         if(enemyDeathCount == enemyGroup.enemySpawn.Count) {
             StartNewStage();
@@ -156,5 +182,6 @@ public class GameController : MonoBehaviour
     public void GameOver() {
         gameState = GameState.GameOver;
         gameOverText.SetActive(true);
+        CancelInvoke();
     }
 }

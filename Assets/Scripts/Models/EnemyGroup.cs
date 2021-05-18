@@ -24,10 +24,9 @@ public class EnemyGroup : MonoBehaviour
     void Start()
     {
         enemyGroup = GetComponent<Transform>();
-        InvokeRepeating("Shoot", GameController.instance.enemyShootingFrequency, GameController.instance.enemyShootingFrequency);
     }
 
-    void Shoot() {
+    public void Shoot() {
         List<GameObject> allChildren = enemyGroup.Cast<Transform>().Select(t=>t.gameObject).ToList();
 
         GameObject closestEnemy = allChildren.Aggregate((curMin, x) => 
