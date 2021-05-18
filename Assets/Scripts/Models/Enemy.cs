@@ -6,8 +6,15 @@ public class Enemy : MonoBehaviour
 {
     private int lifes;
 
+    public EnemyBullet enemyBullet;
+
     public void Start() {
         lifes = GameController.instance.maxEnemyLifes;
+    }
+
+    public void Shoot() {
+        Debug.Log("Shooting");
+        Instantiate(enemyBullet.gameObject, gameObject.transform.position, gameObject.transform.rotation);
     }
     
     public void TakeHit() {

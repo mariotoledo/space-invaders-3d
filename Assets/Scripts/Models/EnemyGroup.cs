@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [System.Serializable]
 public class EnemyPosition {
@@ -12,18 +13,32 @@ public class EnemyGroup : MonoBehaviour
 {
     private Transform enemyGroup;
 
-    public List<Vector3> enemySpawnPositions;
-
     [SerializeField]
     public List<EnemyPosition> enemySpawn;
 
     public GameObject loseLine;
 
     public GameObject enemyPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
         enemyGroup = GetComponent<Transform>();
+        InvokeRepeating("Shoot", GameController.instance.enemyShootingFrequency, GameController.instance.enemyShootingFrequency);
+    }
+
+    void Shoot() {
+        List<GameObject> allChildren = enemyGroup.Cast<Transform>().Select(t=>t.gameObject).ToList();
+
+        GameObject closestEnemy = allChildren.Aggregate((curMin, x) => 
+            (curMin == null || x.transform.position.y < curMin.transform.position.y ? x : curMin));
+
+        if(closestEnemy) {
+            GameObject[] closestEnemies = allChildren.Where(enemy => enemy.transform.position.y == closestEnemy.transform.position.y).ToArray();
+
+            int randomEnemyIndex = new System.Random().Next(0, closestEnemies.Length);
+            closestEnemies[randomEnemyIndex].GetComponent<Enemy>().Shoot();
+        }
     }
 
     public void CreateEnemies() {

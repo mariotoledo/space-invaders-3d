@@ -11,6 +11,8 @@ public class GameController : MonoBehaviour
     public float spaceShipSpeed = 0.01f;
     public float spaceShipBulletSpeed = 0.01f;
     public float enemySpeed = 0.1f;
+    public float enemyBulletSpeed = 0.01f;
+    public float enemyShootingFrequency = 3f;
     public float stageDifficultMultiplier = 1.3f;
 
     public int maxBarrierLifes = 3;
@@ -24,6 +26,7 @@ public class GameController : MonoBehaviour
     public int points = 0;
 
     private int stage = 0;
+    private int currentPlayerLifes = 0;
 
     private int enemyDeathCount = 0;
 
@@ -36,6 +39,8 @@ public class GameController : MonoBehaviour
 
     public GameObject gameOverText;
     public GameObject stageText;
+    public GameObject lifesText;
+    public GameObject pointsText;
 
     void Awake() {
         if (instance == null)
@@ -45,6 +50,8 @@ public class GameController : MonoBehaviour
     }
 
     void Start() {
+        currentPlayerLifes = maxPlayerLifes;
+        stageText.GetComponent<Text>().text = "Lifes: " + currentPlayerLifes;
         CalculateScreenBounds();
         StartNewStage();
     }
@@ -117,6 +124,20 @@ public class GameController : MonoBehaviour
         player.canShoot = true;
     }
 
+    public void OnEnemyBulletHitCollider(Collider2D collider) {
+        if(collider.tag == "BarrierBlock") {
+            collider.gameObject.GetComponent<BarrierBlock>().TakeHit();
+        } else if (collider.tag == "Player") {
+            currentPlayerLifes--;
+            lifesText.GetComponent<Text>().text = "Lifes: " + currentPlayerLifes;
+
+            if(currentPlayerLifes == 0) {
+                GameOver();
+            }
+        }
+        player.canShoot = true;
+    }
+
     public void OnBulletLeaveScreen() {
         player.canShoot = true;
     }
@@ -124,6 +145,8 @@ public class GameController : MonoBehaviour
     public void OnEnemyKilled() {
         enemyDeathCount++;
         points += 100;
+
+        pointsText.GetComponent<Text>().text = "Points: " + points;
 
         if(enemyDeathCount == enemyGroup.enemySpawn.Count) {
             StartNewStage();
