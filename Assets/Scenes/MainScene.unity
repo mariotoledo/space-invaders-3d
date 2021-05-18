@@ -382,6 +382,49 @@ MonoBehaviour:
   - {x: 1, y: 1, z: 0}
   - {x: 2, y: 1, z: 0}
   - {x: 3, y: 1, z: 0}
+  enemySpawn:
+  - position: {x: -3, y: 3, z: 0}
+    enemy: {fileID: 4136310858010647303, guid: b5b7d1887ee502d43ae3f433f29f47fa, type: 3}
+  - position: {x: -2, y: 3, z: 0}
+    enemy: {fileID: 4136310858010647303, guid: b5b7d1887ee502d43ae3f433f29f47fa, type: 3}
+  - position: {x: -1, y: 3, z: 0}
+    enemy: {fileID: 4136310858010647303, guid: b5b7d1887ee502d43ae3f433f29f47fa, type: 3}
+  - position: {x: 0, y: 3, z: 0}
+    enemy: {fileID: 4136310858010647303, guid: b5b7d1887ee502d43ae3f433f29f47fa, type: 3}
+  - position: {x: 1, y: 3, z: 0}
+    enemy: {fileID: 4136310858010647303, guid: b5b7d1887ee502d43ae3f433f29f47fa, type: 3}
+  - position: {x: 2, y: 3, z: 0}
+    enemy: {fileID: 4136310858010647303, guid: b5b7d1887ee502d43ae3f433f29f47fa, type: 3}
+  - position: {x: 3, y: 3, z: 0}
+    enemy: {fileID: 4136310858010647303, guid: b5b7d1887ee502d43ae3f433f29f47fa, type: 3}
+  - position: {x: -3, y: 2, z: 0}
+    enemy: {fileID: 7920860401346341228, guid: 8d3af985a635bb8488da245c26458fc3, type: 3}
+  - position: {x: -2, y: 2, z: 0}
+    enemy: {fileID: 7920860401346341228, guid: 8d3af985a635bb8488da245c26458fc3, type: 3}
+  - position: {x: -1, y: 2, z: 0}
+    enemy: {fileID: 7920860401346341228, guid: 8d3af985a635bb8488da245c26458fc3, type: 3}
+  - position: {x: 0, y: 2, z: 0}
+    enemy: {fileID: 7920860401346341228, guid: 8d3af985a635bb8488da245c26458fc3, type: 3}
+  - position: {x: 1, y: 2, z: 0}
+    enemy: {fileID: 7920860401346341228, guid: 8d3af985a635bb8488da245c26458fc3, type: 3}
+  - position: {x: 2, y: 2, z: 0}
+    enemy: {fileID: 7920860401346341228, guid: 8d3af985a635bb8488da245c26458fc3, type: 3}
+  - position: {x: 3, y: 2, z: 0}
+    enemy: {fileID: 7920860401346341228, guid: 8d3af985a635bb8488da245c26458fc3, type: 3}
+  - position: {x: -3, y: 1, z: 0}
+    enemy: {fileID: 5997563612360141771, guid: f0694f341e450334498dc1fe728f3e53, type: 3}
+  - position: {x: -2, y: 1, z: 0}
+    enemy: {fileID: 5997563612360141771, guid: f0694f341e450334498dc1fe728f3e53, type: 3}
+  - position: {x: -1, y: 1, z: 0}
+    enemy: {fileID: 5997563612360141771, guid: f0694f341e450334498dc1fe728f3e53, type: 3}
+  - position: {x: 0, y: 1, z: 0}
+    enemy: {fileID: 5997563612360141771, guid: f0694f341e450334498dc1fe728f3e53, type: 3}
+  - position: {x: 1, y: 1, z: 0}
+    enemy: {fileID: 5997563612360141771, guid: f0694f341e450334498dc1fe728f3e53, type: 3}
+  - position: {x: 2, y: 1, z: 0}
+    enemy: {fileID: 5997563612360141771, guid: f0694f341e450334498dc1fe728f3e53, type: 3}
+  - position: {x: 3, y: 1, z: 0}
+    enemy: {fileID: 5997563612360141771, guid: f0694f341e450334498dc1fe728f3e53, type: 3}
   loseLine: {fileID: 662854509}
   enemyPrefab: {fileID: 5997563612360141771, guid: f0694f341e450334498dc1fe728f3e53, type: 3}
 --- !u!4 &539905274
@@ -974,10 +1017,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spaceShipSpeed: 0.1
   spaceShipBulletSpeed: 0.3
-  enemySpeed: 0.1
+  enemySpeed: 0.01
+  stageDifficultMultiplier: 1.3
   maxBarrierLifes: 3
   maxPlayerLifes: 3
   maxEnemyLifes: 1
+  newStageTextSecondsDelay: 3
   minScreenBound: 0
   maxScreenBound: 0
   points: 0

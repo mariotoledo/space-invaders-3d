@@ -2,11 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class EnemyPosition {
+    public Vector3 position;
+    public GameObject enemy;
+}
+
 public class EnemyGroup : MonoBehaviour
 {
     private Transform enemyGroup;
 
     public List<Vector3> enemySpawnPositions;
+
+    [SerializeField]
+    public List<EnemyPosition> enemySpawn;
 
     public GameObject loseLine;
 
@@ -15,13 +24,11 @@ public class EnemyGroup : MonoBehaviour
     void Start()
     {
         enemyGroup = GetComponent<Transform>();
-        CreateEnemies();
-        //InvokeRepeating("MoveEnemies", GameController.instance.enemyMoveFrequency, GameController.instance.enemyMoveFrequency);        
     }
 
-    void CreateEnemies() {
-        foreach(Vector3 enemySpawnPosition in enemySpawnPositions) {
-            GameObject enemy = Instantiate(enemyPrefab, enemySpawnPosition, enemyPrefab.transform.rotation);
+    public void CreateEnemies() {
+        foreach(EnemyPosition enemySpawnItem in enemySpawn) {
+            GameObject enemy = Instantiate(enemySpawnItem.enemy, enemySpawnItem.position, enemyPrefab.transform.rotation);
             enemy.transform.SetParent(gameObject.transform);
         }
     }

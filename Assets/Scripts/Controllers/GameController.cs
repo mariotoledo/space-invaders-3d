@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class GameController : MonoBehaviour
     public float spaceShipSpeed = 0.01f;
     public float spaceShipBulletSpeed = 0.01f;
     public float enemySpeed = 0.1f;
+    public float stageDifficultMultiplier = 1.3f;
 
     public int maxBarrierLifes = 3;
     public int maxPlayerLifes = 3;
@@ -22,6 +24,8 @@ public class GameController : MonoBehaviour
     public int points = 0;
 
     private int stage = 0;
+
+    private int enemyDeathCount = 0;
 
     public Player player;
     public Camera camera;
@@ -46,8 +50,12 @@ public class GameController : MonoBehaviour
     }
 
     void StartNewStage() {
+        enemyDeathCount = 0;
+        enemyGroup.CreateEnemies();
         gameState = GameState.Starting;
         stage++;
+        enemySpeed = enemySpeed * stageDifficultMultiplier;
+        stageText.GetComponent<Text>().text = "Stage " + stage;
         stageText.SetActive(true);
 
         Invoke("RunStage", newStageTextSecondsDelay);
@@ -105,13 +113,21 @@ public class GameController : MonoBehaviour
             collider.gameObject.GetComponent<BarrierBlock>().TakeHit();
         } else if (collider.tag == "Enemy") {
             collider.gameObject.GetComponent<Enemy>().TakeHit();
-            points += 100;
         }
         player.canShoot = true;
     }
 
     public void OnBulletLeaveScreen() {
         player.canShoot = true;
+    }
+
+    public void OnEnemyKilled() {
+        enemyDeathCount++;
+        points += 100;
+
+        if(enemyDeathCount == enemyGroup.enemySpawn.Count) {
+            StartNewStage();
+        }
     }
 
     public void GameOver() {
