@@ -8,13 +8,15 @@ public class EnemyGroup : MonoBehaviour
 
     public List<Vector3> enemySpawnPositions;
 
+    public GameObject loseLine;
+
     public GameObject enemyPrefab;
     // Start is called before the first frame update
     void Start()
     {
         enemyGroup = GetComponent<Transform>();
         CreateEnemies();
-        InvokeRepeating("MoveEnemies", GameController.instance.enemyMoveFrequency, GameController.instance.enemyMoveFrequency);        
+        //InvokeRepeating("MoveEnemies", GameController.instance.enemyMoveFrequency, GameController.instance.enemyMoveFrequency);        
     }
 
     void CreateEnemies() {
@@ -25,8 +27,7 @@ public class EnemyGroup : MonoBehaviour
     }
 
     // Update is called once per frame
-    void MoveEnemies() {
-        Debug.Log("entering move enemies");
+    public void MoveEnemies() {
         enemyGroup.position += Vector3.right * GameController.instance.enemySpeed;
 
         foreach(Transform child in enemyGroup) {
@@ -38,6 +39,10 @@ public class EnemyGroup : MonoBehaviour
                     GameController.instance.enemySpeed *= -1;
                     enemyGroup.position += Vector3.down * 0.5f;
                     return;
+                }
+
+                if(enemy.position.y < loseLine.transform.position.y) {
+                    GameController.instance.GameOver();
                 }
             }
         }

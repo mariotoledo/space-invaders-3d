@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -9,7 +10,6 @@ public class GameController : MonoBehaviour
     public float spaceShipSpeed = 0.01f;
     public float spaceShipBulletSpeed = 0.01f;
     public float enemySpeed = 0.1f;
-    public float enemyMoveFrequency = 0.1f;
 
     public int maxBarrierLifes = 3;
     public int maxPlayerLifes = 3;
@@ -23,6 +23,10 @@ public class GameController : MonoBehaviour
     public Player player;
     public Camera camera;
 
+    private GameState gameState;
+
+    public EnemyGroup enemyGroup;
+
     void Awake() {
         if (instance == null)
             instance = this;
@@ -32,12 +36,19 @@ public class GameController : MonoBehaviour
 
     void Start() {
         CalculateScreenBounds();
+        gameState = GameState.Running;
     }
 
-    void FixedUpdate()
-    {
-        UpdatePlayerMovement();
-        UpdatePlayerShot();
+    void FixedUpdate() {
+        if(gameState == GameState.Running) {
+            UpdatePlayerMovement();
+            UpdatePlayerShot();
+            UpdateEnemyMovement();
+        } else if (gameState == GameState.GameOver) {
+            if(Input.GetButton("Fire1")) {
+                SceneManager.LoadScene("MainScene");
+            }
+        }
     }
 
     /*
@@ -53,6 +64,10 @@ public class GameController : MonoBehaviour
     void UpdatePlayerMovement() {
         float horizontalTrigger = Input.GetAxis("Horizontal");
         player.Move(horizontalTrigger);
+    }
+
+    void UpdateEnemyMovement() {
+        enemyGroup.MoveEnemies();
     }
 
     void UpdatePlayerShot() {
@@ -76,6 +91,6 @@ public class GameController : MonoBehaviour
     }
 
     public void GameOver() {
-        Time.timeScale = 0;
+        gameState = GameState.GameOver;
     }
 }
