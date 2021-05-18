@@ -14,11 +14,14 @@ public class GameController : MonoBehaviour
     public int maxBarrierLifes = 3;
     public int maxPlayerLifes = 3;
     public int maxEnemyLifes = 1;
+    public int newStageTextSecondsDelay = 3;
 
     public float minScreenBound;
     public float maxScreenBound;
 
     public int points = 0;
+
+    private int stage = 0;
 
     public Player player;
     public Camera camera;
@@ -26,6 +29,9 @@ public class GameController : MonoBehaviour
     private GameState gameState;
 
     public EnemyGroup enemyGroup;
+
+    public GameObject gameOverText;
+    public GameObject stageText;
 
     void Awake() {
         if (instance == null)
@@ -36,7 +42,25 @@ public class GameController : MonoBehaviour
 
     void Start() {
         CalculateScreenBounds();
+        StartNewStage();
+    }
+
+    void StartNewStage() {
+        gameState = GameState.Starting;
+        stage++;
+        stageText.SetActive(true);
+
+        Invoke("RunStage", newStageTextSecondsDelay);
+    }
+
+    void RunStage() {
+        stageText.SetActive(false);
         gameState = GameState.Running;
+    }
+
+    IEnumerator DelayAction()
+    {
+        yield return new WaitForSeconds(3000);
     }
 
     void FixedUpdate() {
@@ -92,5 +116,6 @@ public class GameController : MonoBehaviour
 
     public void GameOver() {
         gameState = GameState.GameOver;
+        gameOverText.SetActive(true);
     }
 }
