@@ -11,7 +11,7 @@ public class Missile : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if(target != null) {
             transform.position = Vector3.MoveTowards(transform.position, target.transform.position, GameController.instance.missileSpeed);

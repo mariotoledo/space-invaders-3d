@@ -1352,7 +1352,7 @@ MonoBehaviour:
   normalEnemyPoints: 100
   specialEnemyPoints: 300
   missileTriggerCount: 3
-  missileSpeed: 0.01
+  missileSpeed: 0.1
   player: {fileID: 1903408759}
   camera: {fileID: 519420031}
   enemyGroup: {fileID: 539905273}
