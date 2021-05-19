@@ -7,8 +7,10 @@ public class Player : MonoBehaviour
 {
     private Transform playerPosition;
     public PlayerBullet bullet;
+    public Missile missile;
 
     public bool canShoot = true;
+    public bool canShootMissile = true;
 
     void Start()
     {
@@ -28,6 +30,15 @@ public class Player : MonoBehaviour
             Instantiate(bullet.gameObject, playerPosition.position, playerPosition.rotation);
             GameController.instance.OnPlayerFireBullet();
             canShoot = false;
+        }
+    }
+
+    public void LaunchMissile(GameObject target) {
+        if(canShootMissile == true) {
+            canShootMissile = false;
+            GameObject newMissile = Instantiate(missile.gameObject, playerPosition.position, playerPosition.rotation);
+            newMissile.transform.position = gameObject.transform.position;
+            newMissile.GetComponent<Missile>().SetTarget(target);
         }
     }
 

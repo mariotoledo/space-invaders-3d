@@ -33,6 +33,9 @@ public class GameController : MonoBehaviour
     private int currentPlayerLifes = 0;
 
     private int enemyDeathCount = 0;
+    public int missileTriggerCount = 3;
+
+    public float missileSpeed = 0.01f;
 
     public Player player;
     public Camera camera;
@@ -98,6 +101,11 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(3000);
     }
 
+    void Update() {
+        UpdatePlayerShot();
+        UpdatePlayerMissileShot();
+    }
+
     void FixedUpdate() {
         if(gameState == GameState.Running) {
             UpdatePlayerMovement();
@@ -135,8 +143,15 @@ public class GameController : MonoBehaviour
     }
 
     void UpdatePlayerShot() {
-        if(Input.GetButton("Fire1")) {
+        if(Input.GetKeyDown(KeyCode.Space) == true) {
             player.Shoot();
+        }
+    }
+
+    void UpdatePlayerMissileShot() {
+        if (Input.GetKeyDown(KeyCode.LeftControl) == true && targetImage.gameObject.activeSelf){
+            player.LaunchMissile(missileTarget);
+            targetImage.SetActive(false);
         }
     }
 
@@ -145,6 +160,16 @@ public class GameController : MonoBehaviour
     }
 
     public void OnBulletHitCollider(Collider2D collider) {
+        EvaluateCollision(collider);
+        player.canShoot = true;
+    }
+
+    public void OnMissileHitCollider(Collider2D collider) {
+        EvaluateCollision(collider);
+        player.canShootMissile = true;
+    }
+
+    private void EvaluateCollision(Collider2D collider) {
         if(collider.tag == "BarrierBlock") {
             collider.gameObject.GetComponent<BarrierBlock>().TakeHit();
         } else if (collider.tag == "Enemy") {
@@ -155,7 +180,6 @@ public class GameController : MonoBehaviour
         } else if (collider.tag == "EnemySpaceShip") {
             collider.gameObject.GetComponent<EnemySpaceShip>().TakeHit();
         }
-        player.canShoot = true;
     }
 
     public void OnEnemyBulletHitCollider(Collider2D collider) {
@@ -182,7 +206,7 @@ public class GameController : MonoBehaviour
     public void OnPlayerFireBullet() {
         playerShootCount++;
 
-        if(playerShootCount == 3) {
+        if(playerShootCount == missileTriggerCount) {
             playerShootCount = 0;
             FindMissileTarget();
         }

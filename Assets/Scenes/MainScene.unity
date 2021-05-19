@@ -1266,6 +1266,8 @@ MonoBehaviour:
   points: 0
   normalEnemyPoints: 100
   specialEnemyPoints: 300
+  missileTriggerCount: 3
+  missileSpeed: 0.01
   player: {fileID: 1903408759}
   camera: {fileID: 519420031}
   enemyGroup: {fileID: 539905273}
@@ -1736,7 +1738,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bullet: {fileID: 1710256478071239629, guid: 6b17ae0fffe6bd3468225c83f8d7b692, type: 3}
+  missile: {fileID: 4910127585993368021, guid: 349631883130a4a40a32da9b73b1444b, type: 3}
   canShoot: 1
+  canShootMissile: 1
 --- !u!1 &2043182847
 GameObject:
   m_ObjectHideFlags: 0
