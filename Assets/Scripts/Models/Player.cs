@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+[System.Serializable]
+public class PlayerShipConfig {
+    public int maxPlayerLifes;
+    public float spaceShipSpeed;
+    public float spaceShipBulletSpeed;
+}
 public class Player : MonoBehaviour
 {
     private Transform playerPosition;
@@ -56,6 +62,6 @@ public class Player : MonoBehaviour
             horizontalTrigger = 0;
         }
 
-        SetPosition(GetPosition() + (Vector3.right * horizontalTrigger * GameController.instance.spaceShipSpeed));
+        SetPosition(GetPosition() + (Vector3.right * horizontalTrigger * GameController.instance.GetChosenShipConfig().spaceShipSpeed));
     }
 }

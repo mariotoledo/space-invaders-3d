@@ -1327,16 +1327,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d89671da7cb60914491255b7f45f8759, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spaceShipSpeed: 0.1
-  spaceShipBulletSpeed: 0.3
   enemySpeed: 0.01
   enemyBulletSpeed: 0.1
   enemyShootingFrequency: 3
   enemySpaceShipFrequency: 15
   enemySpaceShipSpeed: 0.05
-  stageDifficultMultiplier: 1.3
+  stageDifficultMultiplier: 1.5
+  playerShipConfigs:
+  - maxPlayerLifes: 3
+    spaceShipSpeed: 0.2
+    spaceShipBulletSpeed: 0.1
+  - maxPlayerLifes: 3
+    spaceShipSpeed: 0.1
+    spaceShipBulletSpeed: 0.2
+  - maxPlayerLifes: 5
+    spaceShipSpeed: 0.1
+    spaceShipBulletSpeed: 0.1
   maxBarrierLifes: 3
-  maxPlayerLifes: 3
   maxEnemyLifes: 1
   newStageTextSecondsDelay: 3
   minScreenBound: 0

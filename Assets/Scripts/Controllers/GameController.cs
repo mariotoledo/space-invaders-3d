@@ -8,17 +8,16 @@ public class GameController : MonoBehaviour
 {
     public static GameController instance = null;
 
-    public float spaceShipSpeed = 0.01f;
-    public float spaceShipBulletSpeed = 0.01f;
     public float enemySpeed = 0.1f;
     public float enemyBulletSpeed = 0.01f;
     public float enemyShootingFrequency = 3f;
     public float enemySpaceShipFrequency = 15f;
     public float enemySpaceShipSpeed = 0.1f;
-    public float stageDifficultMultiplier = 1.3f;
+    public float stageDifficultMultiplier = 1.4f;
+
+    public List<PlayerShipConfig> playerShipConfigs;
 
     public int maxBarrierLifes = 3;
-    public int maxPlayerLifes = 3;
     public int maxEnemyLifes = 1;
     public int newStageTextSecondsDelay = 3;
 
@@ -53,11 +52,17 @@ public class GameController : MonoBehaviour
     private int playerShootCount = 0;
     public GameObject targetImage;
 
+    private PlayerShipConfig currentPlayerShipConfig;
+
     void Awake() {
         if (instance == null)
             instance = this;
         else if (instance != this)
             Destroy(gameObject);
+    }
+
+    public PlayerShipConfig GetChosenShipConfig() {
+        return currentPlayerShipConfig;
     }
 
     void FindMissileTarget() {
@@ -66,8 +71,10 @@ public class GameController : MonoBehaviour
     }
 
     void Start() {
-        currentPlayerLifes = maxPlayerLifes;
-        stageText.GetComponent<Text>().text = "Lifes: " + currentPlayerLifes;
+        int chosenShip = GlobalVariables.Get<int>("chosenShip");
+        currentPlayerShipConfig = playerShipConfigs[chosenShip];
+        currentPlayerLifes = currentPlayerShipConfig.maxPlayerLifes;
+        lifesText.GetComponent<Text>().text = "Lifes: " + currentPlayerLifes;
         CalculateScreenBounds();
         StartNewStage();
     }
@@ -117,7 +124,7 @@ public class GameController : MonoBehaviour
                 targetImage.transform.position = missileTarget.transform.position;
             }
         } else if (gameState == GameState.GameOver) {
-            if(Input.GetButton("Fire1")) {
+            if(Input.GetKeyDown(KeyCode.Space) == true) {
                 SceneManager.LoadScene("MainScene");
             }
         }

@@ -6,14 +6,17 @@ public class PlayerBullet : MonoBehaviour
 {
     private Transform bullet; 
 
+    private int chosenShip;
+
     void Start()
     {
+        chosenShip = GlobalVariables.Get<int>("chosenShip");
         bullet = GetComponent<Transform>();
     }
 
     void FixedUpdate()
     {
-        bullet.position += Vector3.up * GameController.instance.spaceShipBulletSpeed;
+        bullet.position += Vector3.up * GameController.instance.GetChosenShipConfig().spaceShipBulletSpeed;
 
         if(GameController.instance.camera.WorldToScreenPoint(bullet.position).y >= Screen.height) {
             Destroy(gameObject);

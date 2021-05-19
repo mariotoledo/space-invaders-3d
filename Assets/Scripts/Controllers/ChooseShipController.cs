@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ChooseShipController : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class ChooseShipController : MonoBehaviour
     public int currentShipIndex = 0;
 
     public float shipRotationSpeed = 10f;
+
+    public Text shipDescription;
 
     public GameObject ships;
 
@@ -24,7 +27,9 @@ public class ChooseShipController : MonoBehaviour
         foreach(Transform child in ships.transform) {
             child.gameObject.SetActive(false);
         }
-        ships.transform.GetChild(currentShipIndex).gameObject.SetActive(true);
+        GameObject currentShip = ships.transform.GetChild(currentShipIndex).gameObject;
+        currentShip.SetActive(true);
+        shipDescription.text = currentShip.GetComponent<ShipSelection>().description;
     }
 
     void Start() {
