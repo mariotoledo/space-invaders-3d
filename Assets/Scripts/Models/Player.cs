@@ -14,6 +14,11 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        int currentShipIndex = GlobalVariables.Get<int>("chosenShip");
+        foreach(Transform child in gameObject.transform) {
+            child.gameObject.SetActive(false);
+        }
+        gameObject.transform.GetChild(currentShipIndex).gameObject.SetActive(true);
         playerPosition = GetComponent<Transform>();
     }
 
