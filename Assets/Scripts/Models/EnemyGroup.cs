@@ -26,11 +26,19 @@ public class EnemyGroup : MonoBehaviour
         enemyGroup = GetComponent<Transform>();
     }
 
-    public void Shoot() {
+    public GameObject FindClosestEnemy() {
         List<GameObject> allChildren = enemyGroup.Cast<Transform>().Select(t=>t.gameObject).ToList();
 
         GameObject closestEnemy = allChildren.Aggregate((curMin, x) => 
             (curMin == null || x.transform.position.y < curMin.transform.position.y ? x : curMin));
+
+        return closestEnemy;
+    }
+
+    public void Shoot() {
+        GameObject closestEnemy = FindClosestEnemy();
+
+        List<GameObject> allChildren = enemyGroup.Cast<Transform>().Select(t=>t.gameObject).ToList();
 
         if(closestEnemy) {
             GameObject[] closestEnemies = allChildren.Where(enemy => enemy.transform.position.y == closestEnemy.transform.position.y).ToArray();

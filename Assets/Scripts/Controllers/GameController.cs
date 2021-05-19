@@ -46,12 +46,20 @@ public class GameController : MonoBehaviour
     public GameObject stageText;
     public GameObject lifesText;
     public GameObject pointsText;
+    private GameObject missileTarget;
+    private int playerShootCount = 0;
+    public GameObject targetImage;
 
     void Awake() {
         if (instance == null)
             instance = this;
         else if (instance != this)
             Destroy(gameObject);
+    }
+
+    void FindMissileTarget() {
+        missileTarget = enemyGroup.FindClosestEnemy();
+        targetImage.SetActive(true);
     }
 
     void Start() {
@@ -96,6 +104,10 @@ public class GameController : MonoBehaviour
             UpdatePlayerShot();
             UpdateEnemyMovement();
             enemySpaceShip.Move();
+
+            if(missileTarget != null) {
+                targetImage.transform.position = missileTarget.transform.position;
+            }
         } else if (gameState == GameState.GameOver) {
             if(Input.GetButton("Fire1")) {
                 SceneManager.LoadScene("MainScene");
@@ -136,6 +148,9 @@ public class GameController : MonoBehaviour
         if(collider.tag == "BarrierBlock") {
             collider.gameObject.GetComponent<BarrierBlock>().TakeHit();
         } else if (collider.tag == "Enemy") {
+            if(collider.gameObject == missileTarget) {
+                targetImage.SetActive(false);
+            }
             collider.gameObject.GetComponent<Enemy>().TakeHit();
         } else if (collider.tag == "EnemySpaceShip") {
             collider.gameObject.GetComponent<EnemySpaceShip>().TakeHit();
@@ -154,7 +169,6 @@ public class GameController : MonoBehaviour
                 GameOver();
             }
         }
-        player.canShoot = true;
     }
 
     public void OnBulletLeaveScreen() {
@@ -163,6 +177,15 @@ public class GameController : MonoBehaviour
 
     public void OnEnemySpaceShipKilled() {
         AddPoints(specialEnemyPoints);
+    }
+
+    public void OnPlayerFireBullet() {
+        playerShootCount++;
+
+        if(playerShootCount == 3) {
+            playerShootCount = 0;
+            FindMissileTarget();
+        }
     }
 
     private void AddPoints (int points) {

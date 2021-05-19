@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
     public void Shoot() {
         if(canShoot == true) {
             Instantiate(bullet.gameObject, playerPosition.position, playerPosition.rotation);
+            GameController.instance.OnPlayerFireBullet();
             canShoot = false;
         }
     }
